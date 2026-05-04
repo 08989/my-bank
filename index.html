@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>My Bank - Secure Banking</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- Splash Screen -->
+  <div class="splash-screen" id="splashScreen">
+    <div class="logo">My Bank</div>
+    <div class="tagline">Your Trusted Banking Partner</div>
+  </div>
+  
+  <!-- Main App Container -->
+  <div class="app-container">
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar" role="navigation">
+      <div class="sidebar-header">
+        <span class="bank-name">My Bank</span>
+        <span class="close-btn" onclick="toggleSidebar()" aria-label="Close sidebar">✖</span>
+      </div>
+      <div class="user-greeting" id="sidebarUserGreeting"></div>
+      <ul class="sidebar-list" id="sidebarMenu">
+        <li onclick="setActiveMenu(this); profile()" aria-label="View profile">
+          <span class="icon">🧑</span> <span id="profileLabel">Profile</span>
+        </li>
+        <li onclick="setActiveMenu(this); toggleLanguage()" aria-label="Change language">
+          <span class="icon">🌐</span> <span id="languageLabel">Language</span>
+        </li>
+        <li onclick="setActiveMenu(this); toggleTheme()" aria-label="Toggle theme">
+          <span class="icon">🌙</span> <span id="themeLabel">Theme</span>
+        </li>
+        <li onclick="setActiveMenu(this); openSettings()" aria-label="Open settings">
+          <span class="icon">⚙️</span> <span id="settingsLabel">Settings</span>
+        </li>
+      </ul>
+    </div>
+    
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+      <div class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()" aria-label="Toggle sidebar">☰</div>
+      <div class="container" id="loginSection" role="main">
+        <h2 id="appTitle">🏦 My Bank ATM</h2>
+        <div class="input-group">
+          <input type="email" id="loginInput" placeholder="Enter Email" aria-label="Enter email">
+        </div>
+        <div class="input-group">
+          <input type="password" id="passwordInput" placeholder="Enter 4-digit PIN" maxlength="4" aria-label="Enter PIN">
+        </div>
+        <button onclick="login()" aria-label="Login" id="loginBtn">Login</button>
+        <button class="secondary" onclick="openSignUpModal()" aria-label="Sign Up" id="signUpBtn">Sign Up</button>
+        <p id="loginMessage" style="color: #ff6b6b;" aria-live="polite"></p>
+      </div>
+      <div class="atm-container" id="atmSection" role="main" style="display: none;">
+        <h2 id="welcomeMessage">Welcome!</h2>
+        <div class="dashboard">
+          <div class="card" onclick="showPasswordModal('balance')">
+            <div class="icon">💰</div>
+            <div id="checkBalanceBtn">Check Balance</div>
+            <div class="tooltip">View your current balance</div>
+          </div>
+          <div class="card" onclick="showPasswordModal('deposit')">
+            <div class="icon">📥</div>
+            <div id="depositBtn">Deposit</div>
+            <div class="tooltip">Add money to your account</div>
+          </div>
+          <div class="card" onclick="showPasswordModal('withdraw')">
+            <div class="icon">📤</div>
+            <div id="withdrawBtn">Withdraw</div>
+            <div class="tooltip">Take money out</div>
+          </div>
+        </div>
+        <button class="logout-main-btn" onclick="logout()" aria-label="Logout" id="mainLogoutBtn">Logout</button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Backdrop for Modals -->
+  <div class="modal-backdrop" id="modalBackdrop"></div>
+  
+  <!-- Modals -->
+  <div class="modal" id="signUpModal" role="dialog">
+    <h3 id="signUpTitle">Sign Up</h3>
+    <div class="input-group">
+      <input type="text" id="signUpName" placeholder="Full Name" aria-label="Enter full name">
+    </div>
+    <div class="input-group">
+      <input type="text" id="signUpAccount" placeholder="Account Number (4 digits)" maxlength="4" aria-label="Enter account number">
+    </div>
+    <div class="input-group">
+      <input type="text" id="signUpPhone" placeholder="Phone Number (10 digits)" maxlength="10" aria-label="Enter phone number">
+    </div>
+    <div class="input-group">
+      <input type="email" id="signUpEmail" placeholder="Email" aria-label="Enter email">
+    </div>
+    <div class="input-group">
+      <input type="password" id="signUpPassword" placeholder="4-digit PIN" maxlength="4" aria-label="Enter 4-digit PIN">
+    </div>
+    <button onclick="signUp()" aria-label="Submit sign up" id="signUpSubmitBtn">Submit</button>
+    <button class="secondary" onclick="closeModal('signUpModal')" aria-label="Cancel" id="signUpCancelBtn">Cancel</button>
+    <p id="signUpMessage" style="color: #ff6b6b;" aria-live="polite"></p>
+  </div>
+  
+  <div class="modal" id="passwordModal" role="dialog">
+    <h3 id="enterPinTitle">Enter PIN</h3>
+    <div class="input-group">
+      <input type="password" id="passwordEntry" maxlength="4" aria-label="Enter PIN">
+    </div>
+    <button onclick="validatePassword()" aria-label="Submit PIN" id="passwordSubmitBtn">Submit</button>
+    <button class="secondary" onclick="closeModal('passwordModal')" aria-label="Cancel" id="passwordCancelBtn">Cancel</button>
+  </div>
+  
+  <div class="modal" id="amountModal" role="dialog">
+    <h3 id="enterAmountTitle">Enter Amount</h3>
+    <div class="input-group">
+      <input type="number" id="amountEntry" min="0" step="1" aria-label="Enter amount">
+    </div>
+    <button onclick="processTransaction()" aria-label="Submit amount" id="amountSubmitBtn">Submit</button>
+    <button class="secondary" onclick="closeModal('amountModal')" aria-label="Cancel" id="amountCancelBtn">Cancel</button>
+  </div>
+  
+  <div class="modal" id="balanceModal" role="dialog">
+    <h3 id="balanceTitle">Your Balance</h3>
+    <p id="balanceDisplay" aria-live="polite"></p>
+    <button onclick="closeModal('balanceModal')" aria-label="Close" id="balanceCloseBtn">Close</button>
+  </div>
+  
+  <div class="modal" id="profileModal" role="dialog">
+    <h3 id="profileTitle">Profile</h3>
+    <div class="profile-content" id="profileDisplay" aria-live="polite"></div>
+    <button onclick="closeModal('profileModal')" aria-label="Close" id="profileCloseBtn">Close</button>
+  </div>
+  
+  <div class="modal" id="languageModal" role="dialog">
+    <h3 id="selectLanguageTitle">Select Language</h3>
+    <button onclick="changeLanguage('en')" id="langEnglishBtn">English</button>
+    <button onclick="changeLanguage('hi')" id="langHindiBtn">Hindi</button>
+    <button onclick="changeLanguage('fr')" id="langFrenchBtn">Français</button>
+    <button onclick="changeLanguage('ru')" id="langRussianBtn">Русский</button>
+    <button class="secondary" onclick="closeModal('languageModal')" aria-label="Cancel" id="langCancelBtn">Cancel</button>
+  </div>
+  
+  <div class="settings-panel" id="settingsPanel">
+    <label><span id="soundLabel">Sound</span> <input type="checkbox" id="soundToggle" onchange="saveSetting('sound')" aria-label="Toggle sound"></label>
+    <label><span id="vibrationLabel">Vibration</span> <input type="checkbox" id="vibrationToggle" onchange="saveSetting('vibration')" aria-label="Toggle vibration"></label>
+    <label><span id="darkModeLabel">Dark Mode</span> <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()" aria-label="Toggle dark mode"></label>
+    <button onclick="closeSettings()" aria-label="Close settings">Close</button>
+  </div>
+  
+  <script src="script.js"></script>
+</body>
+</html>
